@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+__MACOSX/
+CRC.zip
+llm_usage/
