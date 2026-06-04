@@ -1,0 +1,90 @@
+Template (You need to give your own title)
+
+Names, Email addresses of your team members
+
+1 Introduction
+
+This template is tailored for DCNC (COSC1111) Assignment 3 Task 2.
+
+This template is similar to the format of Association for Computing Machinery (ACM) Lecture Notes on Computer Science (LNCS). You can use this document as a template into which you can type your own text. The main sections in the essay include: introduction, main content, conclusion and reference.
+
+Please note: you need to associate your essay with our teaching, focus on particularly the practical component. The main content should demonstrate the technical details to provide evidence to support your argument. You are required to provide technical diagrams, tables, screenshot from Wireshark, fundamental and theories, etc. to support your argument.
+
+You need to accumulate project experience, Internship for landing at a job. Earning certifications such as Cisco's CCNA, Network+, Security+, AWS Certified Solutions Architect, etc. Participation in practicing activities and having a portfolio of showcasing skills and expertise through competition and hackathon, as well as staying up-to-date with the latest technologies, these are the best practice for making you job ready.
+
+2 Main content
+
+For job ready in Computer Science and IT areas, you are required to have a good understanding at the back-end IT technologies that support an application. Therefore, you may learn the STAR style in which you need to explore:
+
+Situation: introduction and background
+Task: identify the problems for your essay
+Action (main section): show the associated technologies and how to judge the performance.
+Result: summary of your work.
+You are required to follow the professional format to organize your essay. You can reference to: IEEE and ACM.
+
+2.1 IEEE Information
+
+IEEE, pronounced "Eye-triple-E", stands for the Institute of Electrical and Electronics Engineers [1]. IEEE is the world’s largest professional association for the advancement of technology.
+
+There are more than 425,000 IEEE members in over 160 countries around the world. IEEE members are engineers, scientists, and allied professionals whose technical interests are rooted in electrical and computer sciences, engineering, and related disciplines. The highest grade of membership, IEEE Fellow, is attained through nomination by peers and approval by the IEEE Board of Directors for distinction in the profession. Table 1 lists some of the data regarding IEEE.
+
+Table 1. IEEE related data.
+
+Category
+
+Number
+
+Memo
+
+IEEE Xplore
+
+5 million documents
+
+Digital library
+
+Download publications
+
+8 million per month
+
+From IEEE Xplore, Transaction,
+
+journal, magazine
+
+Sponsor Conf.
+
+2000
+
+Conference sponsor
+
+Conference proceeding
+
+1800
+
+Conference publications
+
+2.2 ACM Information
+
+ACM represents the Association for Computing Machinery [2]. ACM is the world's largest educational and scientific society. ACM society publishes journals, newsletters and annual conference proceedings. Networking, data mining, AI and machine learning are popular areas. As shown in Figure 1, Generative AI which is the backbone of ChatGPT has become the hottest topic nowadays [4]. As a student in Computing Technologies, how can you participate in this technical wave. A simple rule: keep on learning, follow the instructions from your lecturers and tutors. Higher education programs in RMIT equip you with the employability skills.
+
+
+Fig. 1. Progress of Natural Language Processing [5].
+
+3 Conclusion
+
+Do you know that the popular Bitcoin and blockchain are based on peer-to-peer networks [3]. The author of reference 3, Satoshi, is a pseudo person, who is the inventor of Bitcoin. Therefore, Satoshi, a no-name small person has changed the world. This is an encouragement to you, isn’t it.
+
+Training and preparing students job ready is our teaching goal. Completion of programs in our school equips you with:
+
+Technical Skills: Proficiency in programming languages (such as Python, Java), understanding of networking and database concepts, and familiarity with operating systems.
+Problem-Solving Skills: Ability to identify the issues, troubleshoot issues, think analytically, and provide effective solutions by trading-off available resources.
+Soft Skills: Strong communication, teamwork, adaptability, and time management skills.
+Note that you need to accommodate your work within 4 pages. You should list around 6 references and include at least 2 technical references like [3, 4].
+
+References
+
+http://www.ieee.org/
+http://www.acm.org/
+N. Satoshi. Bitcoin: A Peer-to-Peer Electronic Cash System. Bitcoin.org, 2008.
+A. Vaswani, N. Shazeer, N. Parmar, etc. Attention is all you need. Proceedings of the 31st International Conference on Neural Information Processing Systems (NIPS'17), page 6000-6010, https://dl.acm.org/doi/10.5555/3295222.3295349
+https://www.liveperson.com/blog/generative-ai-tools-impact/.
+https://github.com/SkywardAI/
