@@ -56,7 +56,16 @@ def server_fixture() -> int:
         daemon=True,
     )
     t.start()
-    time.sleep(0.1)  # brief pause so the server can call bind() + listen()
+    # Poll until the server port is accepting connections
+    import socket as _socket
+    for _ in range(50):
+        try:
+            with _socket.create_connection(("127.0.0.1", actual_port), timeout=0.5):
+                break
+        except ConnectionRefusedError:
+            time.sleep(0.05)
+    else:
+        raise RuntimeError(f"Server on port {actual_port} failed to start within timeout")
 
     # 3. Yield the port to tests
     yield actual_port
@@ -64,6 +73,17 @@ def server_fixture() -> int:
     # No explicit teardown is needed: the daemon thread is automatically
     # terminated when the test process exits.  The server's KeyboardInterrupt
     # handler will fire if the process receives SIGINT.
+
+
+# ---------------------------------------------------------------------------
+# Helper
+# ---------------------------------------------------------------------------
+
+def _find_free_port() -> int:
+    """Return a temporary free TCP port on 127.0.0.1."""
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.bind(("127.0.0.1", 0))
+        return s.getsockname()[1]
 
 
 # ---------------------------------------------------------------------------
@@ -127,23 +147,79 @@ class TestIntegration:
     def test_empty_malformed_data(
         self, server_fixture: int, payload: str, description: str, capsys: pytest.CaptureFixture
     ) -> None:
-        """Send edge-case payloads and document the server's behaviour.
+        """Send edge-case payloads through the full client code path.
 
-        The server's :func:`lib.crc.crc_division` only acts on bits that are
-        ``"1"``; all other characters (including ``"0"`` and letters) are
-        treated as non-``"1"`` and skipped.  As a result — provided no
-        exception is raised — the remainder will be all zeros and the server
-        reports *success* for arbitrary non-binary input.
+        Exercises the entire client code path (CRC computation → codeword
+        construction → socket send → response print) instead of testing
+        the server in isolation.
         """
         actual_port = server_fixture
-        response = _raw_send("127.0.0.1", actual_port, payload)
+        import client
+        client.run_client(host="127.0.0.1", port=actual_port, data=payload)
 
-        # Document what the server actually returns for this payload.
-        print(f"[{description}] payload={payload!r} → response={response!r}")
-
+        captured = capsys.readouterr()
         # The server does not raise an exception; it responds with a
         # success message because the CRC remainder of non-binary data
         # (treated as all-zeros) is itself all zeros.
-        assert "SERVER:" in response, (
-            f"Unexpected response format for {description}: {response!r}"
+        assert "Success" in captured.out, (
+            f"Unexpected output for {description} (payload={payload!r}): "
+            f"{captured.out}"
+        )
+
+    def test_connection_refused(self) -> None:
+        """``client.run_client`` raises ``ConnectionRefusedError`` when no server is listening."""
+        import client
+
+        with pytest.raises(ConnectionRefusedError):
+            client.run_client(host="127.0.0.1", port=1, data="1010")
+
+    def test_failure_response_handling(
+        self, capsys: pytest.CaptureFixture
+    ) -> None:
+        """Client gracefully prints a Failure response from the server without crashing."""
+        import client
+
+        # Start a minimal mock server that always returns Failure
+        mock_port = _find_free_port()
+
+        def _mock_server() -> None:
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                s.bind(("127.0.0.1", mock_port))
+                s.listen(1)
+                conn, _ = s.accept()
+                with conn:
+                    conn.recv(1024)  # discard codeword
+                    conn.sendall(
+                        b"SERVER: Failure! Error detected using CRC"
+                    )
+
+        t = threading.Thread(target=_mock_server, daemon=True)
+        t.start()
+        time.sleep(0.1)
+
+        client.run_client(host="127.0.0.1", port=mock_port, data="1010")
+
+        captured = capsys.readouterr()
+        assert "Failure" in captured.out, (
+            f"Expected 'Failure' in client output, got: {captured.out}"
+        )
+
+    def test_large_payload(
+        self, server_fixture: int, capsys: pytest.CaptureFixture
+    ) -> None:
+        """Client–server handles a payload approaching the 1024-byte recv buffer."""
+        import client
+
+        # Generate enough data that the codeword is ~1000 bytes
+        # Each "1010" is 4 bits; the CRC adds 3 bits → 7 bytes per pattern unit
+        # 150 reps × 7 bytes = 1050 bytes (just over 1024)
+        data = "1010" * 150  # 600 bits → codeword ~1050 bytes
+
+        client.run_client(
+            host="127.0.0.1", port=server_fixture, data=data
+        )
+
+        captured = capsys.readouterr()
+        assert "Success" in captured.out, (
+            f"Expected 'Success' for large payload, got: {captured.out}"
         )
