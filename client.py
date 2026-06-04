@@ -34,6 +34,7 @@ def run_client(
 
     crc = crc_division(data, DIVISOR)
     codeword = data + crc
+    print(f"Raw data before adding CRC: {data}")
     print(f"Send to server (data + CRC): {codeword}")
 
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
