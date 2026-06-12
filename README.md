@@ -155,7 +155,7 @@ SERVER: Success! No error detected using CRC
 pytest -v
 ```
 
-This runs all **16 tests** (11 unit tests + 5 integration tests). You should see output similar to:
+This runs all **32 tests**. You should see output similar to:
 
 ```
 ============================= test session starts ==============================
@@ -164,7 +164,7 @@ collected 16 items
 tests/test_crc.py ...........                                           [ 68%]
 tests/test_integration.py .....                                         [100%]
 
-============================== 16 passed in 0.xx ===============================
+============================== 32 passed in 0.xx ===============================
 ```
 
 ---
